@@ -4,4 +4,4 @@ COPY . /project
 RUN cd /project && mvn package
 
 #this part for debug is moved into compose file, into "command":
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/project/target/servicos_web-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/project/target/rick-and-morty-api-0.0.1-SNAPSHOT.jar"]
