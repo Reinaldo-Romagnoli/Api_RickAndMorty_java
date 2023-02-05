@@ -1,0 +1,49 @@
+version: "3"
+
+services:
+  db:
+    image: mysql:5.7.37
+    container_name: db
+    ports:
+      - "13306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: RICKANDMORTY
+    command:
+      [
+        '--default-authentication-plugin=mysql_native_password',
+        '--lower-case-table-names=1'
+      ]
+    volumes:
+      - ./db-init-scripts:/docker-entrypoint-initdb.d
+    restart: always
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysql",
+          "-h",
+          "localhost",
+          "-P",
+          "3306",
+          "-u",
+          "root",
+          "--password=root",
+          "-e",
+          "select 1",
+          "RICKANDMORTY"
+        ]
+      interval: 1s
+      timeout: 3s
+      retries: 30
+
+  app:
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    ports:
+      - "18080:8080"
+    command: java -Djava.security.egd=file:/dev/./urandom -jar /project/target/servicos_web-0.0.1-SNAPSHOT.jar
+    depends_on:
+      db:
+        condition: service_healthy
