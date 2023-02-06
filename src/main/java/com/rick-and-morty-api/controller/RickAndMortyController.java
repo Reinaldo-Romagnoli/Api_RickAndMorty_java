@@ -12,11 +12,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/webclient")
+@RequestMapping("/external-api/rick-and-morty")
 @AllArgsConstructor
 public class RickAndMortyController {
     RickAndMortyClient rickAndMortyClient;
-
 
     @GetMapping("/character/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -25,7 +24,6 @@ public class RickAndMortyController {
 
     }
 
-
     @GetMapping("/location/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Mono<LocationResponse> getLocationById(@PathVariable String id) {
@@ -33,19 +31,15 @@ public class RickAndMortyController {
 
     }
 
-
     @GetMapping("/episode/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Mono<EpisodeResponse> getEpisodeById(@PathVariable String id) {
         return rickAndMortyClient.findAEpisodeById(id);
 
     }
-
-
     @GetMapping("/episodes")
     @ResponseStatus(HttpStatus.OK)
     public Flux<ListOfEpisodesResponse> ListAllEpisodes() {
         return rickAndMortyClient.ListAllEpisodes();
-
     }
 }
